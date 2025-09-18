@@ -1,10 +1,32 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/layout/Header";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { 
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { toast } from "@/hooks/use-toast";
 import { 
   Plus,
   Search,
@@ -151,6 +173,14 @@ const mockData = {
 
 export default function CompanyDashboard() {
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedInternship, setSelectedInternship] = useState<any>(null);
+  const [showDetailsDialog, setShowDetailsDialog] = useState(false);
+  const [showEditDialog, setShowEditDialog] = useState(false);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [showPostDialog, setShowPostDialog] = useState(false);
+  const [showAnalyticsDialog, setShowAnalyticsDialog] = useState(false);
+  const [showFilterDialog, setShowFilterDialog] = useState(false);
+  const navigate = useNavigate();
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -197,6 +227,75 @@ export default function CompanyDashboard() {
     }
   };
 
+  const handleViewDetails = (internship: any) => {
+    setSelectedInternship(internship);
+    setShowDetailsDialog(true);
+  };
+
+  const handleEditInternship = (internship: any) => {
+    setSelectedInternship(internship);
+    setShowEditDialog(true);
+  };
+
+  const handleDeleteInternship = (internship: any) => {
+    setSelectedInternship(internship);
+    setShowDeleteDialog(true);
+  };
+
+  const confirmDelete = () => {
+    toast({
+      title: "Internship Deleted",
+      description: `${selectedInternship?.title} has been successfully deleted.`,
+    });
+    setShowDeleteDialog(false);
+    setSelectedInternship(null);
+  };
+
+  const handlePostNewInternship = () => {
+    setShowPostDialog(true);
+  };
+
+  const handleShowAnalytics = () => {
+    setShowAnalyticsDialog(true);
+  };
+
+  const handleShowFilters = () => {
+    setShowFilterDialog(true);
+  };
+
+  const handleBrowseTalent = () => {
+    toast({
+      title: "Navigating to Talent Pool",
+      description: "Opening the talent browsing interface...",
+    });
+    // Navigate to talent pool page
+    navigate('/company/talent');
+  };
+
+  const handleViewAllCandidates = () => {
+    toast({
+      title: "Viewing All Candidates",
+      description: "Opening the candidate management interface...",
+    });
+    navigate('/company/candidates');
+  };
+
+  const handleViewAllActivity = () => {
+    toast({
+      title: "Viewing All Activity",
+      description: "Opening the activity log...",
+    });
+    navigate('/company/activity');
+  };
+
+  const handleCandidateMessages = () => {
+    toast({
+      title: "Opening Messages",
+      description: "Navigating to candidate messages...",
+    });
+    navigate('/company/messages');
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Header 
@@ -216,7 +315,7 @@ export default function CompanyDashboard() {
               Manage your internship programs and discover top talent from across India.
             </p>
           </div>
-          <Button variant="hero" size="lg">
+          <Button variant="hero" size="lg" onClick={handlePostNewInternship}>
             <Plus className="h-5 w-5 mr-2" />
             Post New Internship
           </Button>
@@ -309,11 +408,11 @@ export default function CompanyDashboard() {
                     <span>Your Internships</span>
                   </CardTitle>
                   <div className="flex space-x-2">
-                    <Button variant="outline" size="sm">
+                    <Button variant="outline" size="sm" onClick={handleShowFilters}>
                       <Filter className="h-4 w-4 mr-2" />
                       Filter
                     </Button>
-                    <Button variant="outline" size="sm">
+                    <Button variant="outline" size="sm" onClick={handleShowAnalytics}>
                       <BarChart3 className="h-4 w-4 mr-2" />
                       Analytics
                     </Button>
@@ -381,15 +480,15 @@ export default function CompanyDashboard() {
                           </div>
 
                           <div className="flex flex-col space-y-2 ml-4">
-                            <Button size="sm" variant="outline">
+                            <Button size="sm" variant="outline" onClick={() => handleViewDetails(internship)}>
                               <Eye className="h-4 w-4 mr-2" />
                               View Details
                             </Button>
-                            <Button size="sm" variant="outline">
+                            <Button size="sm" variant="outline" onClick={() => handleEditInternship(internship)}>
                               <Edit className="h-4 w-4 mr-2" />
                               Edit
                             </Button>
-                            <Button size="sm" variant="outline" className="text-destructive hover:text-destructive">
+                            <Button size="sm" variant="outline" className="text-destructive hover:text-destructive" onClick={() => handleDeleteInternship(internship)}>
                               <Trash2 className="h-4 w-4 mr-2" />
                               Delete
                             </Button>
@@ -449,7 +548,7 @@ export default function CompanyDashboard() {
                     </div>
                   </Card>
                 ))}
-                <Button variant="outline" className="w-full" size="sm">
+                <Button variant="outline" className="w-full" size="sm" onClick={handleViewAllCandidates}>
                   View All Candidates
                 </Button>
               </CardContent>
@@ -473,7 +572,7 @@ export default function CompanyDashboard() {
                     </div>
                   </div>
                 ))}
-                <Button variant="outline" className="w-full" size="sm">
+                <Button variant="outline" className="w-full" size="sm" onClick={handleViewAllActivity}>
                   View All Activity
                 </Button>
               </CardContent>
@@ -485,19 +584,19 @@ export default function CompanyDashboard() {
                 <CardTitle>Quick Actions</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                <Button variant="hero" className="w-full justify-start" size="sm">
+                <Button variant="hero" className="w-full justify-start" size="sm" onClick={handlePostNewInternship}>
                   <Plus className="h-4 w-4 mr-2" />
                   Post New Internship
                 </Button>
-                <Button variant="outline" className="w-full justify-start" size="sm">
+                <Button variant="outline" className="w-full justify-start" size="sm" onClick={handleBrowseTalent}>
                   <Search className="h-4 w-4 mr-2" />
                   Browse Talent Pool
                 </Button>
-                <Button variant="outline" className="w-full justify-start" size="sm">
+                <Button variant="outline" className="w-full justify-start" size="sm" onClick={handleShowAnalytics}>
                   <BarChart3 className="h-4 w-4 mr-2" />
                   View Analytics
                 </Button>
-                <Button variant="outline" className="w-full justify-start" size="sm">
+                <Button variant="outline" className="w-full justify-start" size="sm" onClick={handleCandidateMessages}>
                   <MessageSquare className="h-4 w-4 mr-2" />
                   Candidate Messages
                 </Button>
@@ -506,6 +605,299 @@ export default function CompanyDashboard() {
           </div>
         </div>
       </div>
+
+      {/* Dialogs */}
+      {/* Post New Internship Dialog */}
+      <Dialog open={showPostDialog} onOpenChange={setShowPostDialog}>
+        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Post New Internship</DialogTitle>
+            <DialogDescription>
+              Create a new internship opportunity for students to apply.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Job Title</label>
+              <Input placeholder="e.g., Software Development Intern" />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Department</label>
+                <Input placeholder="e.g., Engineering" />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Location</label>
+                <Input placeholder="e.g., Bangalore, Karnataka" />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Stipend</label>
+                <Input placeholder="e.g., ₹25,000/month" />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Duration</label>
+                <Input placeholder="e.g., 6 months" />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Required Skills</label>
+              <Input placeholder="e.g., React, JavaScript, Node.js" />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowPostDialog(false)}>
+              Cancel
+            </Button>
+            <Button 
+              variant="hero" 
+              onClick={() => {
+                toast({
+                  title: "Internship Posted Successfully!",
+                  description: "Your internship has been posted and is now live for applications.",
+                });
+                setShowPostDialog(false);
+              }}
+            >
+              Post Internship
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* View Details Dialog */}
+      <Dialog open={showDetailsDialog} onOpenChange={setShowDetailsDialog}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>{selectedInternship?.title}</DialogTitle>
+            <DialogDescription>
+              Detailed information about this internship position
+            </DialogDescription>
+          </DialogHeader>
+          {selectedInternship && (
+            <div className="space-y-4 py-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm font-medium text-muted-foreground">Department</label>
+                  <p className="text-sm">{selectedInternship.department}</p>
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-muted-foreground">Location</label>
+                  <p className="text-sm">{selectedInternship.location}</p>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm font-medium text-muted-foreground">Stipend</label>
+                  <p className="text-sm">{selectedInternship.stipend}</p>
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-muted-foreground">Duration</label>
+                  <p className="text-sm">{selectedInternship.duration}</p>
+                </div>
+              </div>
+              <div>
+                <label className="text-sm font-medium text-muted-foreground">Applications</label>
+                <p className="text-sm">{selectedInternship.applications} students have applied</p>
+              </div>
+              <div>
+                <label className="text-sm font-medium text-muted-foreground">Required Skills</label>
+                <div className="flex flex-wrap gap-2 mt-1">
+                  {selectedInternship.requiredSkills?.map((skill: string, index: number) => (
+                    <Badge key={index} variant="secondary">{skill}</Badge>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowDetailsDialog(false)}>
+              Close
+            </Button>
+            <Button variant="hero" onClick={() => handleEditInternship(selectedInternship)}>
+              Edit Internship
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Edit Internship Dialog */}
+      <Dialog open={showEditDialog} onOpenChange={setShowEditDialog}>
+        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Edit Internship</DialogTitle>
+            <DialogDescription>
+              Update the details of your internship posting.
+            </DialogDescription>
+          </DialogHeader>
+          {selectedInternship && (
+            <div className="space-y-4 py-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Job Title</label>
+                <Input defaultValue={selectedInternship.title} />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Department</label>
+                  <Input defaultValue={selectedInternship.department} />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Location</label>
+                  <Input defaultValue={selectedInternship.location} />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Stipend</label>
+                  <Input defaultValue={selectedInternship.stipend} />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Duration</label>
+                  <Input defaultValue={selectedInternship.duration} />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Required Skills</label>
+                <Input defaultValue={selectedInternship.requiredSkills?.join(', ')} />
+              </div>
+            </div>
+          )}
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowEditDialog(false)}>
+              Cancel
+            </Button>
+            <Button 
+              variant="hero" 
+              onClick={() => {
+                toast({
+                  title: "Internship Updated Successfully!",
+                  description: "Your internship details have been updated.",
+                });
+                setShowEditDialog(false);
+              }}
+            >
+              Save Changes
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete the internship posting for "{selectedInternship?.title}" and remove all associated applications.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Delete Internship
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Analytics Dialog */}
+      <Dialog open={showAnalyticsDialog} onOpenChange={setShowAnalyticsDialog}>
+        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Analytics Dashboard</DialogTitle>
+            <DialogDescription>
+              Detailed analytics and insights for your internship programs.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-6 py-4">
+            <div className="grid grid-cols-3 gap-4">
+              <Card>
+                <CardContent className="p-4">
+                  <div className="text-2xl font-bold text-primary">456</div>
+                  <div className="text-sm text-muted-foreground">Total Applications</div>
+                  <div className="text-xs text-success">+15% from last month</div>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="p-4">
+                  <div className="text-2xl font-bold text-saffron">82%</div>
+                  <div className="text-sm text-muted-foreground">Match Score</div>
+                  <div className="text-xs text-success">+5% improvement</div>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="p-4">
+                  <div className="text-2xl font-bold text-success">23</div>
+                  <div className="text-sm text-muted-foreground">Hired Students</div>
+                  <div className="text-xs text-success">85% conversion</div>
+                </CardContent>
+              </Card>
+            </div>
+            <div className="space-y-4">
+              <h4 className="font-medium">Application Trends</h4>
+              <div className="h-48 bg-muted rounded-lg flex items-center justify-center">
+                <p className="text-muted-foreground">Analytics charts would be displayed here</p>
+              </div>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowAnalyticsDialog(false)}>
+              Close
+            </Button>
+            <Button variant="hero">
+              Export Report
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Filter Dialog */}
+      <Dialog open={showFilterDialog} onOpenChange={setShowFilterDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Filter Internships</DialogTitle>
+            <DialogDescription>
+              Apply filters to narrow down your internship listings.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Status</label>
+              <div className="flex gap-2">
+                <Button variant="outline" size="sm">Active</Button>
+                <Button variant="outline" size="sm">Draft</Button>
+                <Button variant="outline" size="sm">Closed</Button>
+              </div>
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Department</label>
+              <Input placeholder="Filter by department..." />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Location</label>
+              <Input placeholder="Filter by location..." />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowFilterDialog(false)}>
+              Cancel
+            </Button>
+            <Button 
+              variant="hero" 
+              onClick={() => {
+                toast({
+                  title: "Filters Applied",
+                  description: "Your internship listings have been filtered.",
+                });
+                setShowFilterDialog(false);
+              }}
+            >
+              Apply Filters
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

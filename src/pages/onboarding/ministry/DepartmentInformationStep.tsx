@@ -53,19 +53,19 @@ export const DepartmentInformationStep = ({ onNext, onPrevious }: DepartmentInfo
     }
   });
 
-  const { fields: jurisdictionFields, append: addJurisdiction, remove: removeJurisdiction } = useFieldArray({
+  const { fields: jurisdictionFields, append: addJurisdiction, remove: removeJurisdiction } = (useFieldArray as any)({
     control,
-    name: "jurisdictionArea"
+    name: "jurisdictionArea",
   });
 
-  const { fields: responsibilityFields, append: addResponsibility, remove: removeResponsibility } = useFieldArray({
+  const { fields: responsibilityFields, append: addResponsibility, remove: removeResponsibility } = (useFieldArray as any)({
     control,
-    name: "primaryResponsibilities"
+    name: "primaryResponsibilities",
   });
 
-  const { fields: schemeFields, append: addScheme, remove: removeScheme } = useFieldArray({
+  const { fields: schemeFields, append: addScheme, remove: removeScheme } = (useFieldArray as any)({
     control,
-    name: "relatedSchemes"
+    name: "relatedSchemes",
   });
 
   const onSubmit = (data: DepartmentInformationData) => {

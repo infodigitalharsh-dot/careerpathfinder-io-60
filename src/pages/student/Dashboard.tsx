@@ -1,10 +1,32 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/layout/Header";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Input } from "@/components/ui/input";
+import { 
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { toast } from "@/hooks/use-toast";
 import { 
   Search,
   Filter,
@@ -107,6 +129,12 @@ const mockData = {
 
 export default function StudentDashboard() {
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedJob, setSelectedJob] = useState<any>(null);
+  const [showJobDetailsDialog, setShowJobDetailsDialog] = useState(false);
+  const [showApplicationDialog, setShowApplicationDialog] = useState(false);
+  const [showFilterDialog, setShowFilterDialog] = useState(false);
+  const [showProfileDialog, setShowProfileDialog] = useState(false);
+  const navigate = useNavigate();
 
   const getMatchScoreColor = (score: number) => {
     if (score >= 90) return "ai-score-high";
@@ -125,6 +153,93 @@ export default function StudentDashboard() {
       default:
         return <Bell className="h-4 w-4 text-muted-foreground" />;
     }
+  };
+
+  const handleViewJob = (job: any) => {
+    setSelectedJob(job);
+    setShowJobDetailsDialog(true);
+  };
+
+  const handleApplyJob = (job: any) => {
+    setSelectedJob(job);
+    setShowApplicationDialog(true);
+  };
+
+  const handleBookmarkJob = (job: any) => {
+    toast({
+      title: "Job Bookmarked",
+      description: `${job.title} has been saved to your bookmarks.`,
+    });
+  };
+
+  const handleSearchJobs = () => {
+    if (searchTerm.trim()) {
+      toast({
+        title: "Searching Jobs",
+        description: `Searching for "${searchTerm}"...`,
+      });
+      // Implement search logic here
+    } else {
+      toast({
+        title: "Enter Search Term",
+        description: "Please enter a search term to find relevant internships.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleShowFilters = () => {
+    setShowFilterDialog(true);
+  };
+
+  const handleAddSkills = () => {
+    setShowProfileDialog(true);
+  };
+
+  const handleUploadResume = () => {
+    toast({
+      title: "Upload Resume",
+      description: "Opening file upload dialog...",
+    });
+    // Create file input element
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.pdf,.doc,.docx';
+    input.click();
+  };
+
+  const handleAddProjects = () => {
+    navigate('/student/profile?section=projects');
+  };
+
+  const handleViewAllApplications = () => {
+    navigate('/student/applications');
+  };
+
+  const handleViewAllNotifications = () => {
+    navigate('/student/notifications');
+  };
+
+  const handleBrowseCompanies = () => {
+    navigate('/student/companies');
+  };
+
+  const handleTakeAssessment = () => {
+    navigate('/student/assessment');
+  };
+
+  const handleDownloadResume = () => {
+    toast({
+      title: "Downloading Resume",
+      description: "Your resume is being downloaded...",
+    });
+  };
+
+  const handleRefreshRecommendations = () => {
+    toast({
+      title: "Refreshing Recommendations",
+      description: "Getting fresh AI-powered job matches for you...",
+    });
   };
 
   return (
@@ -170,13 +285,13 @@ export default function StudentDashboard() {
               <CardContent>
                 <Progress value={mockData.user.profileCompletion} className="mb-4" />
                 <div className="flex flex-wrap gap-2">
-                  <Button size="sm" variant="outline">
+                  <Button size="sm" variant="outline" onClick={handleAddSkills}>
                     Add Skills
                   </Button>
-                  <Button size="sm" variant="outline">
+                  <Button size="sm" variant="outline" onClick={handleUploadResume}>
                     Upload Resume
                   </Button>
-                  <Button size="sm" variant="outline">
+                  <Button size="sm" variant="outline" onClick={handleAddProjects}>
                     Add Projects
                   </Button>
                 </div>
@@ -201,11 +316,11 @@ export default function StudentDashboard() {
                       className="w-full"
                     />
                   </div>
-                  <Button variant="outline">
+                  <Button variant="outline" onClick={handleShowFilters}>
                     <Filter className="h-4 w-4 mr-2" />
                     Filters
                   </Button>
-                  <Button variant="hero">
+                  <Button variant="hero" onClick={handleSearchJobs}>
                     <Search className="h-4 w-4 mr-2" />
                     Search
                   </Button>
@@ -220,7 +335,7 @@ export default function StudentDashboard() {
                   <Sparkles className="h-6 w-6 text-saffron" />
                   <span>AI-Powered Recommendations</span>
                 </h2>
-                <Button variant="outline" size="sm">
+                <Button variant="outline" size="sm" onClick={handleRefreshRecommendations}>
                   Refresh
                 </Button>
               </div>
@@ -274,15 +389,15 @@ export default function StudentDashboard() {
                       </div>
 
                       <div className="flex flex-col space-y-2 ml-4">
-                        <Button size="sm" variant="hero">
+                        <Button size="sm" variant="hero" onClick={() => handleApplyJob(job)}>
                           <Send className="h-4 w-4 mr-2" />
                           Apply Now
                         </Button>
                         <div className="flex space-x-2">
-                          <Button size="sm" variant="ghost">
+                          <Button size="sm" variant="ghost" onClick={() => handleBookmarkJob(job)}>
                             <BookmarkPlus className="h-4 w-4" />
                           </Button>
-                          <Button size="sm" variant="ghost">
+                          <Button size="sm" variant="ghost" onClick={() => handleViewJob(job)}>
                             <Eye className="h-4 w-4" />
                           </Button>
                         </div>
@@ -330,7 +445,7 @@ export default function StudentDashboard() {
                     <div className="text-xs text-muted-foreground">Selected</div>
                   </div>
                 </div>
-                <Button variant="outline" className="w-full" size="sm">
+                <Button variant="outline" className="w-full" size="sm" onClick={handleViewAllApplications}>
                   View All Applications
                 </Button>
               </CardContent>
@@ -378,7 +493,7 @@ export default function StudentDashboard() {
                     </div>
                   </div>
                 ))}
-                <Button variant="outline" className="w-full" size="sm">
+                <Button variant="outline" className="w-full" size="sm" onClick={handleViewAllNotifications}>
                   View All Notifications
                 </Button>
               </CardContent>
@@ -390,15 +505,15 @@ export default function StudentDashboard() {
                 <CardTitle>Quick Actions</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                <Button variant="outline" className="w-full justify-start" size="sm">
+                <Button variant="outline" className="w-full justify-start" size="sm" onClick={handleBrowseCompanies}>
                   <Users className="h-4 w-4 mr-2" />
                   Browse Companies
                 </Button>
-                <Button variant="outline" className="w-full justify-start" size="sm">
+                <Button variant="outline" className="w-full justify-start" size="sm" onClick={handleTakeAssessment}>
                   <Award className="h-4 w-4 mr-2" />
                   Take Skill Assessment
                 </Button>
-                <Button variant="outline" className="w-full justify-start" size="sm">
+                <Button variant="outline" className="w-full justify-start" size="sm" onClick={handleDownloadResume}>
                   <FileText className="h-4 w-4 mr-2" />
                   Download Resume
                 </Button>
@@ -407,6 +522,223 @@ export default function StudentDashboard() {
           </div>
         </div>
       </div>
+
+      {/* Dialogs */}
+      {/* Job Application Dialog */}
+      <Dialog open={showApplicationDialog} onOpenChange={setShowApplicationDialog}>
+        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Apply for {selectedJob?.title}</DialogTitle>
+            <DialogDescription>
+              Submit your application for this internship at {selectedJob?.company}.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Cover Letter</label>
+              <textarea 
+                className="w-full min-h-[120px] p-3 border border-input rounded-md resize-none"
+                placeholder="Write a compelling cover letter explaining why you're perfect for this role..."
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Resume</label>
+              <div className="flex items-center gap-2">
+                <Button variant="outline" size="sm">
+                  <FileText className="h-4 w-4 mr-2" />
+                  Current Resume
+                </Button>
+                <Button variant="outline" size="sm">
+                  Upload New
+                </Button>
+              </div>
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Additional Information</label>
+              <textarea 
+                className="w-full min-h-[80px] p-3 border border-input rounded-md resize-none"
+                placeholder="Any additional information or portfolio links..."
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowApplicationDialog(false)}>
+              Cancel
+            </Button>
+            <Button 
+              variant="hero" 
+              onClick={() => {
+                toast({
+                  title: "Application Submitted!",
+                  description: `Your application for ${selectedJob?.title} has been successfully submitted.`,
+                });
+                setShowApplicationDialog(false);
+              }}
+            >
+              Submit Application
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Job Details Dialog */}
+      <Dialog open={showJobDetailsDialog} onOpenChange={setShowJobDetailsDialog}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>{selectedJob?.title}</DialogTitle>
+            <DialogDescription>
+              Detailed information about this internship opportunity
+            </DialogDescription>
+          </DialogHeader>
+          {selectedJob && (
+            <div className="space-y-4 py-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm font-medium text-muted-foreground">Company</label>
+                  <p className="text-sm">{selectedJob.company}</p>
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-muted-foreground">Location</label>
+                  <p className="text-sm">{selectedJob.location}</p>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm font-medium text-muted-foreground">Stipend</label>
+                  <p className="text-sm">{selectedJob.stipend}</p>
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-muted-foreground">Duration</label>
+                  <p className="text-sm">{selectedJob.duration}</p>
+                </div>
+              </div>
+              <div>
+                <label className="text-sm font-medium text-muted-foreground">Match Score</label>
+                <Badge className={getMatchScoreColor(selectedJob.matchScore)}>
+                  {selectedJob.matchScore}% Match
+                </Badge>
+              </div>
+              <div>
+                <label className="text-sm font-medium text-muted-foreground">Required Skills</label>
+                <div className="flex flex-wrap gap-2 mt-1">
+                  {selectedJob.tags?.map((skill: string, index: number) => (
+                    <Badge key={index} variant="secondary">{skill}</Badge>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <label className="text-sm font-medium text-muted-foreground">Competition</label>
+                <p className="text-sm">{selectedJob.applicants} students have applied</p>
+              </div>
+            </div>
+          )}
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowJobDetailsDialog(false)}>
+              Close
+            </Button>
+            <Button variant="hero" onClick={() => handleApplyJob(selectedJob)}>
+              Apply Now
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Filter Dialog */}
+      <Dialog open={showFilterDialog} onOpenChange={setShowFilterDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Filter Jobs</DialogTitle>
+            <DialogDescription>
+              Apply filters to find the perfect internships for you.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Location</label>
+              <Input placeholder="e.g., Bangalore, Mumbai, Remote" />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Work Type</label>
+              <div className="flex gap-2">
+                <Button variant="outline" size="sm">Remote</Button>
+                <Button variant="outline" size="sm">Hybrid</Button>
+                <Button variant="outline" size="sm">On-site</Button>
+              </div>
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Stipend Range</label>
+              <div className="grid grid-cols-2 gap-2">
+                <Input placeholder="Min amount" />
+                <Input placeholder="Max amount" />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Skills</label>
+              <Input placeholder="e.g., React, Python, Design" />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowFilterDialog(false)}>
+              Cancel
+            </Button>
+            <Button 
+              variant="hero" 
+              onClick={() => {
+                toast({
+                  title: "Filters Applied",
+                  description: "Your job recommendations have been updated based on your preferences.",
+                });
+                setShowFilterDialog(false);
+              }}
+            >
+              Apply Filters
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Profile Update Dialog */}
+      <Dialog open={showProfileDialog} onOpenChange={setShowProfileDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Update Profile</DialogTitle>
+            <DialogDescription>
+              Add skills to improve your job matching score.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Skills</label>
+              <Input placeholder="e.g., React, JavaScript, Python (comma separated)" />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Experience Level</label>
+              <div className="flex gap-2">
+                <Button variant="outline" size="sm">Beginner</Button>
+                <Button variant="outline" size="sm">Intermediate</Button>
+                <Button variant="outline" size="sm">Advanced</Button>
+              </div>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowProfileDialog(false)}>
+              Cancel
+            </Button>
+            <Button 
+              variant="hero" 
+              onClick={() => {
+                toast({
+                  title: "Profile Updated!",
+                  description: "Your skills have been updated. This will improve your job matching score.",
+                });
+                setShowProfileDialog(false);
+              }}
+            >
+              Save Changes
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

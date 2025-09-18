@@ -61,9 +61,9 @@ export const AccessPermissionsStep = ({ onNext, onPrevious }: AccessPermissionsS
     }
   });
 
-  const { fields: scopeFields, append: addScope, remove: removeScope } = useFieldArray({
+  const { fields: scopeFields, append: addScope, remove: removeScope } = (useFieldArray as any)({
     control,
-    name: "supervisionScope"
+    name: "supervisionScope",
   });
 
   const permissionAreas = watch("permissionAreas");

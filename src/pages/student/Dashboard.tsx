@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Header } from "@/components/layout/Header";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -140,6 +140,23 @@ export default function StudentDashboard() {
   const [showCompaniesDialog, setShowCompaniesDialog] = useState(false);
   const [showAssessmentDialog, setShowAssessmentDialog] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Auto-open dialogs based on URL
+  useEffect(() => {
+    const path = location.pathname;
+    if (path === '/student/applications') {
+      setShowApplicationsDialog(true);
+    } else if (path === '/student/notifications') {
+      setShowNotificationsDialog(true);  
+    } else if (path === '/student/companies') {
+      setShowCompaniesDialog(true);
+    } else if (path === '/student/assessment') {
+      setShowAssessmentDialog(true);
+    } else if (path === '/student/profile') {
+      setShowAddProjectDialog(true);
+    }
+  }, [location.pathname]);
 
   const getMatchScoreColor = (score: number) => {
     if (score >= 90) return "ai-score-high";

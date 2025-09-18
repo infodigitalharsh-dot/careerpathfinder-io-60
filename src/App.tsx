@@ -27,7 +27,16 @@ const App = () => (
           <Route path="/auth/login" element={<Login />} />
           <Route path="/auth/register" element={<Register />} />
           <Route path="/student/dashboard" element={<StudentDashboard />} />
+          <Route path="/student/applications" element={<StudentDashboard />} />
+          <Route path="/student/profile" element={<StudentDashboard />} />
+          <Route path="/student/companies" element={<StudentDashboard />} />
+          <Route path="/student/notifications" element={<StudentDashboard />} />
+          <Route path="/student/assessment" element={<StudentDashboard />} />
           <Route path="/company/dashboard" element={<CompanyDashboard />} />
+          <Route path="/company/talent" element={<CompanyDashboard />} />
+          <Route path="/company/candidates" element={<CompanyDashboard />} />
+          <Route path="/company/activity" element={<CompanyDashboard />} />
+          <Route path="/company/messages" element={<CompanyDashboard />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/onboarding/student" element={<StudentOnboarding />} />
           <Route path="/onboarding/company" element={<CompanyOnboarding />} />

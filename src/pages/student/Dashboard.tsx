@@ -134,6 +134,11 @@ export default function StudentDashboard() {
   const [showApplicationDialog, setShowApplicationDialog] = useState(false);
   const [showFilterDialog, setShowFilterDialog] = useState(false);
   const [showProfileDialog, setShowProfileDialog] = useState(false);
+  const [showAddProjectDialog, setShowAddProjectDialog] = useState(false);
+  const [showApplicationsDialog, setShowApplicationsDialog] = useState(false);
+  const [showNotificationsDialog, setShowNotificationsDialog] = useState(false);
+  const [showCompaniesDialog, setShowCompaniesDialog] = useState(false);
+  const [showAssessmentDialog, setShowAssessmentDialog] = useState(false);
   const navigate = useNavigate();
 
   const getMatchScoreColor = (score: number) => {
@@ -209,23 +214,23 @@ export default function StudentDashboard() {
   };
 
   const handleAddProjects = () => {
-    navigate('/student/profile?section=projects');
+    setShowAddProjectDialog(true);
   };
 
   const handleViewAllApplications = () => {
-    navigate('/student/applications');
+    setShowApplicationsDialog(true);
   };
 
   const handleViewAllNotifications = () => {
-    navigate('/student/notifications');
+    setShowNotificationsDialog(true);
   };
 
   const handleBrowseCompanies = () => {
-    navigate('/student/companies');
+    setShowCompaniesDialog(true);
   };
 
   const handleTakeAssessment = () => {
-    navigate('/student/assessment');
+    setShowAssessmentDialog(true);
   };
 
   const handleDownloadResume = () => {
@@ -735,6 +740,273 @@ export default function StudentDashboard() {
               }}
             >
               Save Changes
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Add Project Dialog */}
+      <Dialog open={showAddProjectDialog} onOpenChange={setShowAddProjectDialog}>
+        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Add New Project</DialogTitle>
+            <DialogDescription>
+              Add a project to showcase your skills and experience.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Project Title *</label>
+              <Input placeholder="e.g., E-commerce Website" />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Description *</label>
+              <textarea 
+                className="w-full min-h-[120px] p-3 border border-input rounded-md resize-none"
+                placeholder="Describe what the project does, your role, and key achievements..."
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Start Date *</label>
+                <Input type="date" />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium">End Date</label>
+                <Input type="date" />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Technologies Used *</label>
+              <Input placeholder="e.g., React, Node.js, MongoDB" />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Live Link</label>
+                <Input placeholder="https://your-project.com" />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium">GitHub Link</label>
+                <Input placeholder="https://github.com/username/project" />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Project Image</label>
+              <div className="flex items-center gap-2">
+                <Button variant="outline" size="sm">
+                  <FileText className="h-4 w-4 mr-2" />
+                  Upload Image
+                </Button>
+                <span className="text-xs text-muted-foreground">JPG, PNG up to 5MB</span>
+              </div>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowAddProjectDialog(false)}>
+              Cancel
+            </Button>
+            <Button 
+              variant="hero" 
+              onClick={() => {
+                toast({
+                  title: "Project Added Successfully!",
+                  description: "Your project has been added to your profile.",
+                });
+                setShowAddProjectDialog(false);
+              }}
+            >
+              Add Project
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Applications Dialog */}
+      <Dialog open={showApplicationsDialog} onOpenChange={setShowApplicationsDialog}>
+        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>My Applications</DialogTitle>
+            <DialogDescription>
+              Track the status of all your internship applications.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            {mockData.user.applications && (
+              <div className="grid gap-4">
+                <Card className="card-interactive">
+                  <CardContent className="p-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h4 className="font-medium">Frontend Developer</h4>
+                        <p className="text-sm text-muted-foreground">StartupXYZ • Applied 3 days ago</p>
+                      </div>
+                      <Badge className="ai-score-high">Shortlisted</Badge>
+                    </div>
+                  </CardContent>
+                </Card>
+                <Card className="card-interactive">
+                  <CardContent className="p-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h4 className="font-medium">Data Analyst</h4>
+                        <p className="text-sm text-muted-foreground">TechCorp • Applied 1 week ago</p>
+                      </div>
+                      <Badge className="ai-score-medium">Under Review</Badge>
+                    </div>
+                  </CardContent>
+                </Card>
+                <Card className="card-interactive">
+                  <CardContent className="p-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h4 className="font-medium">UI/UX Intern</h4>
+                        <p className="text-sm text-muted-foreground">DesignHub • Applied 2 weeks ago</p>
+                      </div>
+                      <Badge variant="outline">Pending</Badge>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            )}
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowApplicationsDialog(false)}>
+              Close
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Notifications Dialog */}
+      <Dialog open={showNotificationsDialog} onOpenChange={setShowNotificationsDialog}>
+        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>All Notifications</DialogTitle>
+            <DialogDescription>
+              Stay updated with your latest activities and opportunities.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            {mockData.recentActivity.map((activity, index) => (
+              <Card key={index} className="card-interactive">
+                <CardContent className="p-4">
+                  <div className="flex items-start space-x-3">
+                    {getStatusIcon(activity.status)}
+                    <div className="flex-1">
+                      <p className="text-sm text-foreground">{activity.message}</p>
+                      <p className="text-xs text-muted-foreground">{activity.time}</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowNotificationsDialog(false)}>
+              Close
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Companies Dialog */}
+      <Dialog open={showCompaniesDialog} onOpenChange={setShowCompaniesDialog}>
+        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Browse Companies</DialogTitle>
+            <DialogDescription>
+              Discover companies offering internship opportunities.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Card className="card-interactive">
+                <CardContent className="p-4">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-12 h-12 bg-gradient-primary rounded-lg flex items-center justify-center">
+                      <Building2 className="h-6 w-6 text-white" />
+                    </div>
+                    <div>
+                      <h4 className="font-medium">TechCorp India</h4>
+                      <p className="text-sm text-muted-foreground">8 open positions</p>
+                      <p className="text-xs text-muted-foreground">Bangalore, Mumbai</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              <Card className="card-interactive">
+                <CardContent className="p-4">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-12 h-12 bg-gradient-hero rounded-lg flex items-center justify-center">
+                      <Building2 className="h-6 w-6 text-white" />
+                    </div>
+                    <div>
+                      <h4 className="font-medium">DataLabs Solutions</h4>
+                      <p className="text-sm text-muted-foreground">5 open positions</p>
+                      <p className="text-xs text-muted-foreground">Delhi, Hyderabad</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowCompaniesDialog(false)}>
+              Close
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Assessment Dialog */}
+      <Dialog open={showAssessmentDialog} onOpenChange={setShowAssessmentDialog}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>Skill Assessment</DialogTitle>
+            <DialogDescription>
+              Take a skill assessment to improve your profile score and get better job matches.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="grid gap-4">
+              <Card className="card-interactive">
+                <CardContent className="p-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h4 className="font-medium">JavaScript Fundamentals</h4>
+                      <p className="text-sm text-muted-foreground">30 questions • 45 minutes</p>
+                    </div>
+                    <Button variant="outline" size="sm">Start</Button>
+                  </div>
+                </CardContent>
+              </Card>
+              <Card className="card-interactive">
+                <CardContent className="p-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h4 className="font-medium">React Development</h4>
+                      <p className="text-sm text-muted-foreground">25 questions • 40 minutes</p>
+                    </div>
+                    <Button variant="outline" size="sm">Start</Button>
+                  </div>
+                </CardContent>
+              </Card>
+              <Card className="card-interactive">
+                <CardContent className="p-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h4 className="font-medium">Data Structures & Algorithms</h4>
+                      <p className="text-sm text-muted-foreground">20 questions • 60 minutes</p>
+                    </div>
+                    <Button variant="outline" size="sm">Start</Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowAssessmentDialog(false)}>
+              Close
             </Button>
           </DialogFooter>
         </DialogContent>

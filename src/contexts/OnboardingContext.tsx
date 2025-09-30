@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
 
 interface OnboardingContextType {
   currentStep: number;
@@ -33,8 +33,9 @@ export const OnboardingProvider: React.FC<OnboardingProviderProps> = ({
   const [userData, setUserData] = useState(initialData);
   const [isLoading, setIsLoading] = useState(false);
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
+  const isInitialMount = useRef(true);
 
-  // Load saved progress from localStorage
+  // Load saved progress from localStorage (only once on mount)
   useEffect(() => {
     const savedProgress = localStorage.getItem(`onboarding-${userRole}`);
     if (savedProgress) {
@@ -47,49 +48,52 @@ export const OnboardingProvider: React.FC<OnboardingProviderProps> = ({
         console.error('Error loading saved progress:', error);
       }
     }
-  }, [userRole, initialData]);
+    isInitialMount.current = false;
+  }, []);
 
-  // Auto-save progress when step or data changes
-  useEffect(() => {
-    if (currentStep > 0) {
-      saveProgress();
-    }
-  }, [currentStep, userData, completedSteps]);
-
-  const updateUserData = (step: string, data: any) => {
+  const updateUserData = useCallback((step: string, data: any) => {
     setUserData(prev => ({
       ...prev,
       [step]: data
     }));
-  };
+  }, []);
 
-  const nextStep = () => {
+  const nextStep = useCallback(() => {
     if (currentStep < totalSteps) {
-      // Mark current step as completed
-      setCompletedSteps(prev => {
-        if (!prev.includes(currentStep)) {
-          return [...prev, currentStep];
-        }
-        return prev;
-      });
+      const newStep = currentStep + 1;
+      const newCompletedSteps = completedSteps.includes(currentStep) 
+        ? completedSteps 
+        : [...completedSteps, currentStep];
       
-      setCurrentStep(prev => prev + 1);
+      setCompletedSteps(newCompletedSteps);
+      setCurrentStep(newStep);
+      
+      // Save progress immediately after navigation
+      const progressData = {
+        step: newStep,
+        data: userData,
+        completed: newCompletedSteps,
+        timestamp: new Date().toISOString()
+      };
+      localStorage.setItem(`onboarding-${userRole}`, JSON.stringify(progressData));
     }
-  };
+  }, [currentStep, totalSteps, completedSteps, userData, userRole]);
 
-  const previousStep = () => {
+  const previousStep = useCallback(() => {
     if (currentStep > 1) {
-      setCurrentStep(prev => prev - 1);
+      setCurrentStep(currentStep - 1);
     }
-  };
+  }, [currentStep]);
 
-  const goToStep = (step: number) => {
+  const goToStep = useCallback((step: number) => {
     if (step >= 1 && step <= totalSteps) {
       setCurrentStep(step);
     }
-  };
+  }, [totalSteps]);
 
-  const saveProgress = async () => {
+  const saveProgress = useCallback(async () => {
+    if (isInitialMount.current) return;
+    
     try {
       const progressData = {
         step: currentStep,
@@ -101,9 +105,9 @@ export const OnboardingProvider: React.FC<OnboardingProviderProps> = ({
     } catch (error) {
       console.error('Error saving progress:', error);
     }
-  };
+  }, [currentStep, userData, completedSteps, userRole]);
 
-  const completeOnboarding = async () => {
+  const completeOnboarding = useCallback(async () => {
     setIsLoading(true);
     try {
       // Simulate API call to save complete onboarding data
@@ -122,7 +126,7 @@ export const OnboardingProvider: React.FC<OnboardingProviderProps> = ({
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [totalSteps, userRole, userData]);
 
   return (
     <OnboardingContext.Provider

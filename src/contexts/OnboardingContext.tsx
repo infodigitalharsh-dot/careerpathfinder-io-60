@@ -49,6 +49,13 @@ export const OnboardingProvider: React.FC<OnboardingProviderProps> = ({
     }
   }, [userRole, initialData]);
 
+  // Auto-save progress when step or data changes
+  useEffect(() => {
+    if (currentStep > 0) {
+      saveProgress();
+    }
+  }, [currentStep, userData, completedSteps]);
+
   const updateUserData = (step: string, data: any) => {
     setUserData(prev => ({
       ...prev,
@@ -67,7 +74,6 @@ export const OnboardingProvider: React.FC<OnboardingProviderProps> = ({
       });
       
       setCurrentStep(prev => prev + 1);
-      saveProgress();
     }
   };
 

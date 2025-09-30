@@ -48,7 +48,7 @@ function StudentOnboardingContent() {
       await completeOnboarding();
       toast({
         title: "Onboarding Complete!",
-        description: "Welcome to the PM Internship Scheme. Redirecting to your dashboard...",
+        description: "Welcome to Intern Setu. Redirecting to your dashboard...",
       });
       navigate("/student/dashboard");
     } catch (error) {
@@ -85,7 +85,7 @@ function StudentOnboardingContent() {
         {/* Header */}
         <div className="text-center mb-8">
           <div className="w-16 h-16 bg-gradient-hero rounded-xl flex items-center justify-center mx-auto mb-4">
-            <span className="text-white font-bold text-xl">PM</span>
+            <span className="text-white font-bold text-xl">IS</span>
           </div>
           <h1 className="text-3xl font-bold text-foreground">Student Onboarding</h1>
           <p className="text-muted-foreground">Complete your profile to get started</p>

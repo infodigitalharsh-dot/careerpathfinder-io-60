@@ -157,7 +157,7 @@ function SuccessStoriesSection() {
       company: "TechCorp India",
       location: "Jaipur, Rajasthan",
       image: "👩‍💻",
-      story: "The PM Internship Scheme changed my life completely. As a student from a small town, I never imagined working with a top tech company. The AI matching was so accurate - it found the perfect role that matched my skills and aspirations.",
+      story: "Intern Setu changed my life completely. As a student from a small town, I never imagined working with a top tech company. The AI matching was so accurate - it found the perfect role that matched my skills and aspirations.",
       outcome: "Got full-time offer with 40% salary hike",
       rating: 5
     },
@@ -312,10 +312,10 @@ function Footer() {
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
               <div className="w-8 h-8 bg-gradient-hero rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">PM</span>
+                <span className="text-white font-bold text-sm">IS</span>
               </div>
               <div>
-                <div className="font-bold text-foreground">PM Internship Scheme</div>
+                <div className="font-bold text-foreground">Intern Setu</div>
                 <div className="text-xs text-muted-foreground">Government of India</div>
               </div>
             </div>

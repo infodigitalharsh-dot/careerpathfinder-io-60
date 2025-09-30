@@ -163,7 +163,7 @@ export default function AdminDashboard() {
         <div className="flex items-center justify-between mb-8">
           <div>
             <h1 className="text-3xl font-bold text-foreground mb-2">
-              PM Internship Scheme Dashboard 🇮🇳
+              Intern Setu Dashboard 🇮🇳
             </h1>
             <p className="text-muted-foreground">
               Government monitoring and administration portal - Ministry of Skill Development & Entrepreneurship

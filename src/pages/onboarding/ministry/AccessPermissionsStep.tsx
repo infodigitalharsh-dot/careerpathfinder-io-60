@@ -135,7 +135,7 @@ export const AccessPermissionsStep = ({ onNext, onPrevious }: AccessPermissionsS
       <div className="text-center space-y-2">
         <h3 className="text-lg font-semibold">Access Permissions</h3>
         <p className="text-sm text-muted-foreground">
-          Define your access level and permissions required for overseeing the PM Internship Scheme.
+          Define your access level and permissions required for overseeing the Intern Setu platform.
         </p>
       </div>
 
@@ -200,7 +200,7 @@ export const AccessPermissionsStep = ({ onNext, onPrevious }: AccessPermissionsS
           <Label>Justification for Data Access *</Label>
           <Textarea
             {...register("dataAccessJustification")}
-            placeholder="Please provide a detailed explanation of why you need access to the requested data and how it relates to your official responsibilities in overseeing the PM Internship Scheme..."
+            placeholder="Please provide a detailed explanation of why you need access to the requested data and how it relates to your official responsibilities in overseeing the Intern Setu platform..."
             className="min-h-[120px]"
           />
           {errors.dataAccessJustification && (

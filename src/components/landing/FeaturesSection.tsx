@@ -110,7 +110,7 @@ export function FeaturesSection() {
             Platform Features
           </Badge>
           <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-6">
-            Why Choose <span className="text-gradient-hero">PM Internship Scheme</span>?
+            Why Choose <span className="text-gradient-hero">Intern Setu</span>?
           </h2>
           <p className="text-lg text-muted-foreground">
             Leveraging cutting-edge technology and government backing to create 

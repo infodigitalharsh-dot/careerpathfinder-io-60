@@ -128,9 +128,9 @@ export default function Login() {
         {/* Government Branding */}
         <div className="text-center mb-8">
           <div className="w-16 h-16 bg-gradient-hero rounded-xl flex items-center justify-center mx-auto mb-4">
-            <span className="text-white font-bold text-xl">PM</span>
+            <span className="text-white font-bold text-xl">IS</span>
           </div>
-          <h1 className="text-2xl font-bold text-foreground">PM Internship Scheme</h1>
+          <h1 className="text-2xl font-bold text-foreground">Intern Setu</h1>
           <p className="text-muted-foreground">Government of India</p>
         </div>
 

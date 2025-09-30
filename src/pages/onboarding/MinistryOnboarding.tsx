@@ -44,7 +44,7 @@ function MinistryOnboardingContent() {
       await completeOnboarding();
       toast({
         title: "Onboarding Complete!",
-        description: "Welcome to the PM Internship Scheme. Redirecting to your dashboard...",
+        description: "Welcome to Intern Setu. Redirecting to your dashboard...",
       });
       navigate("/admin/dashboard");
     } catch (error) {
@@ -77,7 +77,7 @@ function MinistryOnboardingContent() {
         {/* Header */}
         <div className="text-center mb-8">
           <div className="w-16 h-16 bg-gradient-hero rounded-xl flex items-center justify-center mx-auto mb-4">
-            <span className="text-white font-bold text-xl">PM</span>
+            <span className="text-white font-bold text-xl">IS</span>
           </div>
           <h1 className="text-3xl font-bold text-foreground">Ministry Onboarding</h1>
           <p className="text-muted-foreground">Set up your official access to the platform</p>

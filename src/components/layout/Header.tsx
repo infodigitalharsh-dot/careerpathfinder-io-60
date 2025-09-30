@@ -71,10 +71,10 @@ export function Header({ userRole, userName, notifications = 0 }: HeaderProps) {
           <Link to="/" className="flex items-center space-x-3">
             <div className="flex items-center space-x-2">
               <div className="w-10 h-10 bg-gradient-hero rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-lg">PM</span>
+                <span className="text-white font-bold text-lg">IS</span>
               </div>
               <div className="hidden sm:block">
-                <h1 className="text-lg font-bold text-foreground">PM Internship Scheme</h1>
+                <h1 className="text-lg font-bold text-foreground">Intern Setu</h1>
                 <p className="text-xs text-muted-foreground">Government of India</p>
               </div>
             </div>

@@ -72,6 +72,11 @@ export const VerificationDocumentsStep = ({ onComplete, onPrevious, isLoading }:
     onComplete();
   };
 
+  // Temporary Skip for demo
+  const handleSkip = () => {
+    onComplete();
+  };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
       {/* Document Upload Section */}
@@ -281,9 +286,14 @@ export const VerificationDocumentsStep = ({ onComplete, onPrevious, isLoading }:
           <ArrowLeft className="w-4 h-4 mr-2" />
           Previous
         </Button>
-        <Button type="submit" size="lg" disabled={isLoading}>
-          {isLoading ? "Completing Registration..." : "Complete Registration"}
-        </Button>
+        <div className="flex gap-3">
+          <Button type="button" variant="ghost" onClick={handleSkip} size="lg" disabled={isLoading}>
+            Skip (Demo)
+          </Button>
+          <Button type="submit" size="lg" disabled={isLoading}>
+            {isLoading ? "Completing Registration..." : "Complete Registration"}
+          </Button>
+        </div>
       </div>
     </form>
   );

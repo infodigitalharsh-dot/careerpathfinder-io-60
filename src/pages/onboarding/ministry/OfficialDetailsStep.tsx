@@ -74,6 +74,11 @@ export const OfficialDetailsStep = ({ onNext }: OfficialDetailsStepProps) => {
     onNext();
   };
 
+  // Temporary Skip for demo
+  const handleSkip = () => {
+    onNext();
+  };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
       <div className="text-center space-y-2">
@@ -259,7 +264,10 @@ export const OfficialDetailsStep = ({ onNext }: OfficialDetailsStepProps) => {
         </div>
       </div>
 
-      <div className="flex justify-end pt-6">
+      <div className="flex justify-end gap-3 pt-6">
+        <Button type="button" variant="ghost" onClick={handleSkip} size="lg">
+          Skip (Demo)
+        </Button>
         <Button type="submit" size="lg">
           Continue to Department Information
         </Button>

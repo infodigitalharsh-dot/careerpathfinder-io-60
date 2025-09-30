@@ -78,6 +78,11 @@ export const CertificationsStep = ({ onNext, onPrevious }: CertificationsStepPro
     onNext();
   };
 
+  // Temporary Skip for demo
+  const handleSkip = () => {
+    onNext();
+  };
+
   const handleCertificateFileUpload = (index: number) => (files: File[]) => {
     setCertificateFiles(prev => ({ ...prev, [index]: files }));
   };
@@ -289,9 +294,14 @@ export const CertificationsStep = ({ onNext, onPrevious }: CertificationsStepPro
           <ArrowLeft className="w-4 h-4 mr-2" />
           Previous
         </Button>
-        <Button type="submit" size="lg">
-          Continue to Preferences
-        </Button>
+        <div className="flex gap-3">
+          <Button type="button" variant="ghost" onClick={handleSkip} size="lg">
+            Skip (Demo)
+          </Button>
+          <Button type="submit" size="lg">
+            Continue to Preferences
+          </Button>
+        </div>
       </div>
     </form>
   );

@@ -74,6 +74,11 @@ export const AccessPermissionsStep = ({ onNext, onPrevious }: AccessPermissionsS
     onNext();
   };
 
+  // Temporary Skip for demo
+  const handleSkip = () => {
+    onNext();
+  };
+
   const accessLevels = [
     {
       value: "viewer",
@@ -238,9 +243,14 @@ export const AccessPermissionsStep = ({ onNext, onPrevious }: AccessPermissionsS
           <ArrowLeft className="w-4 h-4 mr-2" />
           Previous
         </Button>
-        <Button type="submit" size="lg">
-          Continue to Verification
-        </Button>
+        <div className="flex gap-3">
+          <Button type="button" variant="ghost" onClick={handleSkip} size="lg">
+            Skip (Demo)
+          </Button>
+          <Button type="submit" size="lg">
+            Continue to Verification
+          </Button>
+        </div>
       </div>
     </form>
   );

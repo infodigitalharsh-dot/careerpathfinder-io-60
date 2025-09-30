@@ -143,6 +143,11 @@ export const PreferencesStep = ({ onComplete, onPrevious, isLoading }: Preferenc
     onComplete();
   };
 
+  // Temporary Skip for demo
+  const handleSkip = () => {
+    onComplete();
+  };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
       <div className="text-center space-y-2">
@@ -367,16 +372,21 @@ export const PreferencesStep = ({ onComplete, onPrevious, isLoading }: Preferenc
           <ArrowLeft className="w-4 h-4 mr-2" />
           Previous
         </Button>
-        <Button type="submit" size="lg" disabled={isLoading}>
-          {isLoading ? (
-            <>
-              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-              Completing Setup...
-            </>
-          ) : (
-            "Complete Onboarding"
-          )}
-        </Button>
+        <div className="flex gap-3">
+          <Button type="button" variant="ghost" onClick={handleSkip} size="lg" disabled={isLoading}>
+            Skip (Demo)
+          </Button>
+          <Button type="submit" size="lg" disabled={isLoading}>
+            {isLoading ? (
+              <>
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                Completing Setup...
+              </>
+            ) : (
+              "Complete Onboarding"
+            )}
+          </Button>
+        </div>
       </div>
     </form>
   );

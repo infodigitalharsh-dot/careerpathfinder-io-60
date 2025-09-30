@@ -78,6 +78,11 @@ export const TeamInformationStep = ({ onNext, onPrevious }: TeamInformationStepP
     onNext();
   };
 
+  // Temporary Skip for demo
+  const handleSkip = () => {
+    onNext();
+  };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
       {/* HR Contacts */}
@@ -332,9 +337,14 @@ export const TeamInformationStep = ({ onNext, onPrevious }: TeamInformationStepP
           <ArrowLeft className="w-4 h-4 mr-2" />
           Previous
         </Button>
-        <Button type="submit" size="lg">
-          Continue to Verification
-        </Button>
+        <div className="flex gap-3">
+          <Button type="button" variant="ghost" onClick={handleSkip} size="lg">
+            Skip (Demo)
+          </Button>
+          <Button type="submit" size="lg">
+            Continue to Verification
+          </Button>
+        </div>
       </div>
     </form>
   );

@@ -73,6 +73,11 @@ export const DepartmentInformationStep = ({ onNext, onPrevious }: DepartmentInfo
     onNext();
   };
 
+  // Temporary Skip for demo
+  const handleSkip = () => {
+    onNext();
+  };
+
   const ministries = [
     "Ministry of Education",
     "Ministry of Skill Development and Entrepreneurship",
@@ -243,9 +248,14 @@ export const DepartmentInformationStep = ({ onNext, onPrevious }: DepartmentInfo
           <ArrowLeft className="w-4 h-4 mr-2" />
           Previous
         </Button>
-        <Button type="submit" size="lg">
-          Continue to Access Permissions
-        </Button>
+        <div className="flex gap-3">
+          <Button type="button" variant="ghost" onClick={handleSkip} size="lg">
+            Skip (Demo)
+          </Button>
+          <Button type="submit" size="lg">
+            Continue to Access Permissions
+          </Button>
+        </div>
       </div>
     </form>
   );

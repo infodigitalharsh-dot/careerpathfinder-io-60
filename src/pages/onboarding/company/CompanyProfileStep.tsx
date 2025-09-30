@@ -122,6 +122,11 @@ export const CompanyProfileStep = ({ onNext, onPrevious }: CompanyProfileStepPro
     onNext();
   };
 
+  // Temporary Skip for demo
+  const handleSkip = () => {
+    onNext();
+  };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       <div className="text-center space-y-2 mb-6">
@@ -345,9 +350,14 @@ export const CompanyProfileStep = ({ onNext, onPrevious }: CompanyProfileStepPro
           <ArrowLeft className="w-4 h-4 mr-2" />
           Previous
         </Button>
-        <Button type="submit" size="lg">
-          Continue to Job Posting Preferences
-        </Button>
+        <div className="flex gap-3">
+          <Button type="button" variant="ghost" onClick={handleSkip} size="lg">
+            Skip (Demo)
+          </Button>
+          <Button type="submit" size="lg">
+            Continue to Job Posting Preferences
+          </Button>
+        </div>
       </div>
     </form>
   );

@@ -88,6 +88,11 @@ export const CompanyDetailsStep = ({ onNext }: CompanyDetailsStepProps) => {
     onNext();
   };
 
+  // Temporary Skip for demo
+  const handleSkip = () => {
+    onNext();
+  };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       <div className="text-center space-y-2 mb-6">
@@ -305,7 +310,10 @@ export const CompanyDetailsStep = ({ onNext }: CompanyDetailsStepProps) => {
         </div>
       </div>
 
-      <div className="flex justify-end pt-6">
+      <div className="flex justify-end gap-3 pt-6">
+        <Button type="button" variant="ghost" onClick={handleSkip} size="lg">
+          Skip (Demo)
+        </Button>
         <Button type="submit" size="lg" className="w-full md:w-auto">
           Continue to Company Profile
         </Button>

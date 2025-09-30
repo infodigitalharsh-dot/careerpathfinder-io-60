@@ -58,6 +58,11 @@ export const BasicDetailsStep = ({ onNext }: BasicDetailsStepProps) => {
     onNext();
   };
 
+  // Temporary Skip for demo
+  const handleSkip = () => {
+    onNext();
+  };
+
   const handleProfilePictureUpload = (files: File[]) => {
     setProfilePicture(files);
   };
@@ -171,7 +176,10 @@ export const BasicDetailsStep = ({ onNext }: BasicDetailsStepProps) => {
         </div>
       </div>
 
-      <div className="flex justify-end pt-6">
+      <div className="flex justify-end gap-3 pt-6">
+        <Button type="button" variant="ghost" onClick={handleSkip} size="lg">
+          Skip (Demo)
+        </Button>
         <Button type="submit" size="lg" className="w-full md:w-auto">
           Continue to Career Objectives
         </Button>

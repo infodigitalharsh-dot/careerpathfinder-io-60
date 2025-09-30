@@ -82,6 +82,11 @@ export const ProjectsExperienceStep = ({ onNext, onPrevious }: ProjectsExperienc
     onNext();
   };
 
+  // Temporary Skip for demo
+  const handleSkip = () => {
+    onNext();
+  };
+
   const handleProjectImageUpload = (index: number) => (files: File[]) => {
     setProjectImages(prev => ({ ...prev, [index]: files }));
   };
@@ -345,9 +350,14 @@ export const ProjectsExperienceStep = ({ onNext, onPrevious }: ProjectsExperienc
           <ArrowLeft className="w-4 h-4 mr-2" />
           Previous
         </Button>
-        <Button type="submit" size="lg">
-          Continue to Internships
-        </Button>
+        <div className="flex gap-3">
+          <Button type="button" variant="ghost" onClick={handleSkip} size="lg">
+            Skip (Demo)
+          </Button>
+          <Button type="submit" size="lg">
+            Continue to Internships
+          </Button>
+        </div>
       </div>
     </form>
   );
